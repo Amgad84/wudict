@@ -1,7 +1,9 @@
+
 /* ============================================================
    KINDLE 4.9 — WUDICT / BOOX GO 7
-   إصدار الحبر الإلكتروني الموحّد والمنقّح
-   التصميم الأصلي محفوظ مع تنظيم القواعد ودمج الإصلاحات
+   الإصدار الموحد الشامل — الحبر الإلكتروني
+   التصميم الأصلي محفوظ
+   التعليقات باللغة العربية لتسهيل الصيانة
    ============================================================ */
 
 
@@ -85,9 +87,12 @@ body {
   position: relative !important;
 
   display: grid !important;
+
   grid-template-columns:
     max-content minmax(0, 1fr) 76px repeat(4, 36px) !important;
+
   grid-template-rows: 40px 42px !important;
+
   grid-template-areas:
     "brand dict mode theme wide expand panel"
     "search search search search search search search" !important;
@@ -139,7 +144,7 @@ body {
   color: #555555 !important;
 }
 
-/* حاوية البحث — إطار سويسري تحريري مستقل */
+/* حاوية البحث — الإطار السويسري التحريري */
 #bar #qbox {
   position: relative !important;
   isolation: isolate;
@@ -164,7 +169,7 @@ body {
     inset 0 0 0 4px #c4c4c4 !important;
 }
 
-/* تفاصيل زخرفية في زوايا إطار البحث */
+/* تفاصيل الزوايا الزخرفية لحقل البحث */
 #bar #qbox::before {
   content: "";
   position: absolute;
@@ -175,15 +180,18 @@ body {
   background:
     linear-gradient(#555, #555) left top / 17px 1px no-repeat,
     linear-gradient(#555, #555) left top / 1px 8px no-repeat,
+
     linear-gradient(#888, #888) right top / 9px 1px no-repeat,
     linear-gradient(#888, #888) right top / 1px 13px no-repeat,
+
     linear-gradient(#888, #888) left bottom / 9px 1px no-repeat,
     linear-gradient(#888, #888) left bottom / 1px 13px no-repeat,
+
     linear-gradient(#555, #555) right bottom / 17px 1px no-repeat,
     linear-gradient(#555, #555) right bottom / 1px 8px no-repeat;
 }
 
-/* خط زخرفي علوي قصير */
+/* الخط الزخرفي العلوي */
 #bar #qbox::after {
   content: "";
   position: absolute;
@@ -214,6 +222,7 @@ body {
 
   color: #171717 !important;
   background: transparent !important;
+
   border: none !important;
   border-radius: 9px !important;
   box-shadow: none !important;
@@ -372,13 +381,13 @@ body {
   min-width: 0 !important;
 }
 
-/* إطار تركيز واضح عند التنقل بلوحة المفاتيح */
+/* إطار التركيز عند التنقل بلوحة المفاتيح */
 #bar #frm :is(input, select, button):focus-visible {
   outline: 2px solid #333333 !important;
   outline-offset: 1px !important;
 }
 
-/* رمز Aa الزخرفي — مستقل عن حقل البحث */
+/* رمز Aa — مستقل تماماً عن حقل البحث */
 #bar::after {
   content: "Aa" !important;
   display: block !important;
@@ -398,6 +407,7 @@ body {
   line-height: 1;
   color: #333333;
 }
+
 
 /* ============================================================
    03 — الإطار الرئيسي للتطبيق
@@ -448,7 +458,7 @@ main.col.container::-webkit-scrollbar {
    04 — النتائج وبطاقات القواميس
    ============================================================ */
 
-/* الإزاحة الرأسية الأصلية للنتائج — تُركت كما في الإصدار 4.8 */
+/* الإزاحة الرأسية الأصلية للنتائج — محفوظة كما في 4.8 */
 main.col.container #out {
   margin-top: -133px !important;
 }
@@ -556,13 +566,13 @@ summary .more {
   color: #333333 !important;
 }
 
-/* محتوى بطاقة القاموس */
+/* محتوى بطاقة القاموس — مساحة علوية 48px */
 main.col.container details.dict > dl {
   width: 100% !important;
   max-width: none !important;
 
   margin: 0 !important;
-  padding: 12px !important;
+  padding: 48px 12px 12px !important;
 
   background: #ffffff !important;
   color: #171717 !important;
@@ -619,19 +629,46 @@ main.col.container details.dict > summary .upgrade {
 
 
 /* ============================================================
-   05 — عنوان الكلمة الرئيسية داخل أول بطاقة مفتوحة
+   05 — منع اختفاء بداية محتوى بطاقات القواميس
    ============================================================ */
 
 /*
-   الإصلاح الأساسي:
-   يبقى العنوان ضمن التدفق الطبيعي للمحتوى، ولا يُسحب إلى أعلى البطاقة.
-   احتفظنا بالزخرفة الأصلية، لكن أزلنا التموضع المطلق الذي كان يخفي السطر.
+   إصلاح عام لكل بطاقة مفتوحة:
+   إعادة أول عنصر داخل dl إلى التدفق الطبيعي للمحتوى.
+   إلغاء التموضع والإزاحات والتحويلات التي قد تخفيه.
 */
-#out > div:first-child details.dict[open] > dl > dt:first-child {
+main.col.container #out details.dict[open] > dl > :first-child {
+  position: static !important;
+
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  inset: auto !important;
+
+  transform: none !important;
+  float: none !important;
+
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+
+  overflow: visible !important;
+}
+
+/*
+   الزخرفة الأصلية لعنوان الكلمة في البطاقة الأولى فقط.
+   تبقى داخل تدفق المحتوى ولا تستخدم التموضع المطلق.
+*/
+main.col.container #out > div:first-child details.dict[open] > dl > dt:first-child {
   position: relative !important;
+
   top: auto !important;
   left: auto !important;
   right: auto !important;
+  bottom: auto !important;
+  inset: auto !important;
+
   z-index: 5 !important;
 
   display: flex !important;
@@ -641,12 +678,17 @@ main.col.container details.dict > summary .upgrade {
   width: 100% !important;
   height: auto !important;
   min-height: 31px !important;
+  max-height: none !important;
 
   margin: 0 0 12px !important;
   padding: 4px 16px 6px !important;
 
+  transform: none !important;
+  float: none !important;
+
   color: #174f7b !important;
   background-color: #ffffff !important;
+
   background-image:
     repeating-linear-gradient(
       45deg,
@@ -673,8 +715,8 @@ main.col.container details.dict > summary .upgrade {
   overflow-wrap: anywhere !important;
 }
 
-/* الرمز الزخرفي أعلى العنوان */
-#out > div:first-child details.dict[open] > dl > dt:first-child::before {
+/* الرمز الزخرفي أعلى عنوان الكلمة */
+main.col.container #out > div:first-child details.dict[open] > dl > dt:first-child::before {
   content: "❖" !important;
 
   position: absolute !important;
@@ -687,8 +729,8 @@ main.col.container details.dict > summary .upgrade {
   font-size: 10px !important;
 }
 
-/* الخط الزخرفي أسفل العنوان */
-#out > div:first-child details.dict[open] > dl > dt:first-child::after {
+/* الخط الزخرفي أسفل عنوان الكلمة */
+main.col.container #out > div:first-child details.dict[open] > dl > dt:first-child::after {
   content: "" !important;
 
   position: absolute !important;
@@ -854,7 +896,7 @@ body.wide main.col.container {
 
 
 /* ============================================================
-   10 — تحسين وضوح لوحة الإعدادات لشاشة الحبر الإلكتروني
+   10 — تحسين وضوح لوحة الإعدادات للحبر الإلكتروني
    ============================================================ */
 
 /* ألوان عالية التباين داخل لوحة الإعدادات */
@@ -1117,5 +1159,5 @@ body.wide main.col.container {
 
 
 /* ============================================================
-   نهاية KINDLE 4.9 — إصدار WUDICT الموحّد
+   نهاية KINDLE 4.9 — الإصدار الموحد الشامل
    ============================================================ */
