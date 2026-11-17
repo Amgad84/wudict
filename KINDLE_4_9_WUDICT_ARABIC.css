@@ -1,0 +1,1121 @@
+/* ============================================================
+   KINDLE 4.9 — WUDICT / BOOX GO 7
+   إصدار الحبر الإلكتروني الموحّد والمنقّح
+   التصميم الأصلي محفوظ مع تنظيم القواعد ودمج الإصلاحات
+   ============================================================ */
+
+
+/* ============================================================
+   01 — نظام الألوان والإعدادات العامة
+   ============================================================ */
+
+:root {
+  color-scheme: light;
+
+  --paper: #ffffff;
+  --surface: #eeeeee;
+  --surface-dark: #dddddd;
+
+  --ink: #171717;
+  --secondary: #383838;
+  --muted: #666666;
+
+  --line: #999999;
+  --border: #666666;
+  --frame: #333333;
+  --accent: #222222;
+}
+
+html {
+  color-scheme: light !important;
+  background: #ffffff !important;
+}
+
+body {
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding-top: calc(103px + var(--wd-inset-top, 0px)) !important;
+
+  background: #ffffff !important;
+  color: var(--ink) !important;
+
+  font-family: "AmazonEmber", sans-serif !important;
+  font-size: 17px !important;
+  line-height: 1.5 !important;
+}
+
+* {
+  box-sizing: border-box;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transition: none !important;
+}
+
+
+/* ============================================================
+   02 — شريط الأدوات الثابت
+   ============================================================ */
+
+#bar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 100 !important;
+
+  width: 100% !important;
+  margin: 0 !important;
+  padding: var(--wd-inset-top, 0px) 0 0 !important;
+
+  background: #ffffff !important;
+  border: none !important;
+  border-radius: 0 !important;
+
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#bar.hidden {
+  transform: translateY(-100%);
+}
+
+/* شبكة عناصر شريط الأدوات */
+#bar > #frm {
+  position: relative !important;
+
+  display: grid !important;
+  grid-template-columns:
+    max-content minmax(0, 1fr) 76px repeat(4, 36px) !important;
+  grid-template-rows: 40px 42px !important;
+  grid-template-areas:
+    "brand dict mode theme wide expand panel"
+    "search search search search search search search" !important;
+
+  align-items: center !important;
+  justify-content: stretch !important;
+  gap: 5px !important;
+
+  width: calc(100% - 20px) !important;
+  max-width: 1100px !important;
+  height: auto !important;
+  min-height: 0 !important;
+
+  margin: 0 auto !important;
+  padding: 6px 7px !important;
+
+  overflow: visible !important;
+  white-space: normal !important;
+
+  background: #e5e5e5 !important;
+  border: 2px solid var(--frame) !important;
+  border-bottom: 0 !important;
+  border-radius: 11px 11px 0 0 !important;
+}
+
+#bar > #frm::-webkit-scrollbar {
+  display: none !important;
+}
+
+#bar #frm > .pill,
+#bar #frm .seg {
+  display: contents !important;
+}
+
+/* اسم التطبيق */
+#bar #frm > .brand {
+  grid-area: brand !important;
+  display: inline-block !important;
+
+  margin: 0 2px 0 0 !important;
+
+  color: #333333 !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+}
+
+#bar .brand small {
+  color: #555555 !important;
+}
+
+/* حاوية البحث — إطار سويسري تحريري مستقل */
+#bar #qbox {
+  position: relative !important;
+  isolation: isolate;
+  grid-area: search !important;
+
+  display: flex !important;
+  flex: none !important;
+
+  width: 82% !important;
+  min-width: 0 !important;
+  max-width: 600px !important;
+
+  margin: 0 auto !important;
+
+  box-sizing: border-box !important;
+  border: 1px solid #424242 !important;
+  border-radius: 3px !important;
+  background: #ffffff !important;
+
+  box-shadow:
+    inset 0 0 0 3px #ffffff,
+    inset 0 0 0 4px #c4c4c4 !important;
+}
+
+/* تفاصيل زخرفية في زوايا إطار البحث */
+#bar #qbox::before {
+  content: "";
+  position: absolute;
+  inset: 6px 8px;
+  z-index: 2;
+  pointer-events: none;
+
+  background:
+    linear-gradient(#555, #555) left top / 17px 1px no-repeat,
+    linear-gradient(#555, #555) left top / 1px 8px no-repeat,
+    linear-gradient(#888, #888) right top / 9px 1px no-repeat,
+    linear-gradient(#888, #888) right top / 1px 13px no-repeat,
+    linear-gradient(#888, #888) left bottom / 9px 1px no-repeat,
+    linear-gradient(#888, #888) left bottom / 1px 13px no-repeat,
+    linear-gradient(#555, #555) right bottom / 17px 1px no-repeat,
+    linear-gradient(#555, #555) right bottom / 1px 8px no-repeat;
+}
+
+/* خط زخرفي علوي قصير */
+#bar #qbox::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: 22px;
+
+  width: 38px;
+  height: 2px;
+
+  background: #333333;
+  pointer-events: none;
+}
+
+/* حقل إدخال البحث */
+#bar #q {
+  position: relative;
+  z-index: 1;
+
+  width: 100% !important;
+  min-width: 0 !important;
+
+  height: 39px !important;
+  min-height: 39px !important;
+  max-height: 39px !important;
+
+  margin: 0 !important;
+  padding: 5px 29px 5px 28px !important;
+
+  color: #171717 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 9px !important;
+  box-shadow: none !important;
+
+  font-family: "AmazonEmber", sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+}
+
+#bar #q::placeholder {
+  color: #777777 !important;
+  opacity: 1 !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+}
+
+#bar #qbox .qled {
+  left: 8px !important;
+}
+
+/* زر المفضلة داخل حقل البحث */
+#bar #qstar {
+  position: absolute !important;
+  top: 50% !important;
+  right: 3px !important;
+
+  width: 25px !important;
+  height: 25px !important;
+
+  margin: -12.5px 0 0 !important;
+  padding: 4px !important;
+
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+#bar #frm .chip {
+  display: none !important;
+}
+
+#bar #frm .tools {
+  margin-left: 0 !important;
+}
+
+/* قائمة اختيار نمط البحث */
+#bar #mode {
+  grid-area: mode !important;
+
+  position: static !important;
+  display: block !important;
+  opacity: 1 !important;
+
+  width: 76px !important;
+  min-width: 76px !important;
+  max-width: 76px !important;
+
+  height: 37px !important;
+  min-height: 37px !important;
+  max-height: 37px !important;
+
+  margin: 0 !important;
+  padding: 4px 6px !important;
+
+  background: #ffffff !important;
+  color: #171717 !important;
+
+  border: 2px solid #666666 !important;
+  border-radius: 8px !important;
+
+  font-size: 13px !important;
+}
+
+/* أزرار شريط الأدوات */
+#bar #frm > button.btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  flex: none !important;
+
+  width: 36px !important;
+  min-width: 36px !important;
+  max-width: 36px !important;
+
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+
+  margin: 0 !important;
+  padding: 2px !important;
+
+  background: #ffffff !important;
+  color: #171717 !important;
+
+  border: 2px solid #666666 !important;
+  border-radius: 8px !important;
+
+  font-family: "AmazonEmber", sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+}
+
+#bar #frm > .themeBtn {
+  grid-area: theme !important;
+}
+
+#bar #wideBtn {
+  grid-area: wide !important;
+}
+
+#bar #expandBtn {
+  grid-area: expand !important;
+}
+
+#bar #panelBtn {
+  grid-area: panel !important;
+}
+
+/* قائمة اختيار القاموس */
+#bar #dict {
+  grid-area: dict !important;
+  grid-column: auto !important;
+
+  justify-self: stretch !important;
+
+  display: block !important;
+  position: static !important;
+  opacity: 1 !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+
+  margin: 0 !important;
+  padding: 4px 10px !important;
+
+  color: #171717 !important;
+  background: #ffffff !important;
+
+  border: 2px solid #666666 !important;
+  border-radius: 9px !important;
+
+  font-size: 13px !important;
+  text-align: center !important;
+}
+
+#bar #frm .seg:has(#dict) {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+/* إطار تركيز واضح عند التنقل بلوحة المفاتيح */
+#bar #frm :is(input, select, button):focus-visible {
+  outline: 2px solid #333333 !important;
+  outline-offset: 1px !important;
+}
+
+/* رمز Aa الزخرفي — مستقل عن حقل البحث */
+#bar::after {
+  content: "Aa" !important;
+  display: block !important;
+
+  position: absolute;
+  right: 33px;
+  top: 74%;
+  transform: translateY(-50%);
+
+  z-index: 9999;
+  pointer-events: none;
+
+  font-family: Georgia, serif;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  line-height: 1;
+  color: #333333;
+}
+
+/* ============================================================
+   03 — الإطار الرئيسي للتطبيق
+   ============================================================ */
+
+main.col.container {
+  position: relative !important;
+  display: block !important;
+
+  width: calc(100% - 20px) !important;
+  max-width: 1100px !important;
+
+  height: 80vh !important;
+  min-height: 0 !important;
+  max-height: 80vh !important;
+
+  margin: -4px auto 20px !important;
+  padding: 31px 0 16px !important;
+
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+
+  scrollbar-width: none !important;
+
+  background: #ffffff !important;
+  color: #171717 !important;
+
+  border: 2px solid var(--frame) !important;
+  border-top: 0 !important;
+  border-bottom: 2px solid #333333 !important;
+  border-radius: 0 0 11px 11px !important;
+
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+main.col.container::before {
+  content: none !important;
+  display: none !important;
+}
+
+main.col.container::-webkit-scrollbar {
+  display: none !important;
+}
+
+
+/* ============================================================
+   04 — النتائج وبطاقات القواميس
+   ============================================================ */
+
+/* الإزاحة الرأسية الأصلية للنتائج — تُركت كما في الإصدار 4.8 */
+main.col.container #out {
+  margin-top: -133px !important;
+}
+
+#out {
+  position: relative !important;
+  z-index: 1 !important;
+
+  display: flow-root !important;
+
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+
+  margin: 0 !important;
+  padding: 0 0 10px !important;
+
+  overflow: visible !important;
+
+  background: #ffffff !important;
+  border: none !important;
+  outline: none !important;
+}
+
+#out > div {
+  position: relative !important;
+  display: flow-root !important;
+
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  outline: none !important;
+}
+
+/* الحاوية الأساسية لكل بطاقة قاموس */
+main.col.container details.dict {
+  position: relative !important;
+  display: block !important;
+
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  overflow: visible !important;
+
+  background: #ffffff !important;
+  color: #171717 !important;
+
+  border: none !important;
+  border-radius: 0 !important;
+
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* رأس بطاقة القاموس */
+main.col.container details.dict > summary {
+  position: relative !important;
+
+  display: flex !important;
+  align-items: center !important;
+
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 40px !important;
+
+  margin: 0 !important;
+  padding: 9px 12px !important;
+
+  background: #e5e5e5 !important;
+  color: #171717 !important;
+
+  border: none !important;
+  border-bottom: 1.5px solid #777777 !important;
+  border-radius: 0 !important;
+
+  font-family: "AmazonEmber", sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+}
+
+main.col.container details.dict > summary::before {
+  color: #333333 !important;
+}
+
+main.col.container details.dict[open] > summary {
+  background: #dedede !important;
+  border-bottom: 1.5px solid #777777 !important;
+}
+
+summary .count {
+  color: #555555 !important;
+  font-size: 12px !important;
+}
+
+summary .more {
+  color: #333333 !important;
+}
+
+/* محتوى بطاقة القاموس */
+main.col.container details.dict > dl {
+  width: 100% !important;
+  max-width: none !important;
+
+  margin: 0 !important;
+  padding: 12px !important;
+
+  background: #ffffff !important;
+  color: #171717 !important;
+}
+
+main.col.container details.dict dt {
+  color: #111111 !important;
+  font-size: 1.2em !important;
+  font-weight: 800 !important;
+}
+
+main.col.container details.dict dd {
+  color: #222222 !important;
+}
+
+/* مواضع السهم والعداد والأزرار داخل رأس البطاقة */
+main.col.container details.dict > summary::before {
+  position: absolute !important;
+  left: 12px !important;
+  top: 50% !important;
+
+  transform: translateY(-50%) !important;
+}
+
+main.col.container details.dict[open] > summary::before {
+  transform: translateY(-50%) rotate(90deg) !important;
+}
+
+main.col.container details.dict > summary .count {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+
+  margin: 0 !important;
+
+  transform: translateY(-50%) !important;
+  text-align: right !important;
+}
+
+main.col.container details.dict > summary:has(.more) .count {
+  right: 62px !important;
+}
+
+main.col.container details.dict > summary .more,
+main.col.container details.dict > summary .upgrade {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+
+  margin: 0 !important;
+
+  transform: translateY(-50%) !important;
+}
+
+
+/* ============================================================
+   05 — عنوان الكلمة الرئيسية داخل أول بطاقة مفتوحة
+   ============================================================ */
+
+/*
+   الإصلاح الأساسي:
+   يبقى العنوان ضمن التدفق الطبيعي للمحتوى، ولا يُسحب إلى أعلى البطاقة.
+   احتفظنا بالزخرفة الأصلية، لكن أزلنا التموضع المطلق الذي كان يخفي السطر.
+*/
+#out > div:first-child details.dict[open] > dl > dt:first-child {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  z-index: 5 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 100% !important;
+  height: auto !important;
+  min-height: 31px !important;
+
+  margin: 0 0 12px !important;
+  padding: 4px 16px 6px !important;
+
+  color: #174f7b !important;
+  background-color: #ffffff !important;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 15px,
+      rgba(45, 45, 45, 0.22) 15px 16px,
+      transparent 16px 31px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0 15px,
+      rgba(45, 45, 45, 0.22) 15px 16px,
+      transparent 16px 31px
+    ) !important;
+
+  border: 0 !important;
+  border-bottom: 1px solid #777777 !important;
+
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 25px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+
+  text-align: center !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* الرمز الزخرفي أعلى العنوان */
+#out > div:first-child details.dict[open] > dl > dt:first-child::before {
+  content: "❖" !important;
+
+  position: absolute !important;
+  top: 2px !important;
+  left: 50% !important;
+
+  transform: translateX(-50%) !important;
+
+  color: #555555 !important;
+  font-size: 10px !important;
+}
+
+/* الخط الزخرفي أسفل العنوان */
+#out > div:first-child details.dict[open] > dl > dt:first-child::after {
+  content: "" !important;
+
+  position: absolute !important;
+  bottom: 3px !important;
+  left: 50% !important;
+
+  transform: translateX(-50%) !important;
+
+  width: 44px !important;
+  height: 1px !important;
+
+  background: #777777 !important;
+}
+
+
+/* ============================================================
+   06 — الخطوط وروابط المحتوى وحالات التحديد
+   ============================================================ */
+
+p,
+li,
+dt,
+dd {
+  color: #222222;
+}
+
+a {
+  color: #222222 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+}
+
+code,
+pre {
+  color: #222222 !important;
+  background: #eeeeee !important;
+
+  font-size: 14px !important;
+  overflow-wrap: anywhere;
+}
+
+#status {
+  color: #444444 !important;
+}
+
+.notice {
+  background: #eeeeee !important;
+  color: #171717 !important;
+
+  border: 1px solid #777777 !important;
+  border-radius: 6px !important;
+}
+
+::selection {
+  background: #222222 !important;
+  color: #ffffff !important;
+}
+
+html::before,
+html::after,
+body::before,
+body::after {
+  content: none !important;
+  display: none !important;
+}
+
+
+/* ============================================================
+   07 — وضع العرض الواسع
+   ============================================================ */
+
+body.wide #bar > #frm,
+body.wide main.col.container {
+  max-width: 1200px !important;
+}
+
+
+/* ============================================================
+   08 — تخطيط الشاشات الصغيرة
+   ============================================================ */
+
+@media (max-width: 600px) {
+  #bar > #frm {
+    grid-template-columns:
+      minmax(0, 1fr) 76px 36px !important;
+
+    grid-template-rows: 40px 42px !important;
+
+    grid-template-areas:
+      "dict mode panel"
+      "search search search" !important;
+
+    gap: 5px !important;
+    padding: 6px !important;
+  }
+
+  #bar #frm > .brand,
+  #bar #wideBtn,
+  #bar #expandBtn,
+  #bar #frm > .themeBtn {
+    display: none !important;
+  }
+
+  #bar #qbox {
+    grid-area: search !important;
+
+    width: 80% !important;
+    max-width: 700px !important;
+    min-width: 0 !important;
+
+    margin: 0 auto !important;
+  }
+
+  #bar #q {
+    height: 39px !important;
+    min-height: 39px !important;
+    max-height: 39px !important;
+
+    font-size: 16px !important;
+  }
+
+  #bar #mode {
+    width: 76px !important;
+    min-width: 76px !important;
+    max-width: 76px !important;
+  }
+
+  #bar #panelBtn {
+    display: inline-flex !important;
+  }
+
+  #bar #dict {
+    grid-area: dict !important;
+    grid-column: 1 / -1 !important;
+
+    width: 100% !important;
+  }
+}
+
+
+/* ============================================================
+   09 — تسمية حقل البحث
+   ============================================================ */
+
+#bar > #frm::after {
+  content: "Search" !important;
+
+  position: absolute !important;
+  left: 10px !important;
+  top: 70px !important;
+
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px !important;
+
+  color: #444444 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+
+  pointer-events: none !important;
+}
+
+
+/* ============================================================
+   10 — تحسين وضوح لوحة الإعدادات لشاشة الحبر الإلكتروني
+   ============================================================ */
+
+/* ألوان عالية التباين داخل لوحة الإعدادات */
+#panel {
+  --bg: #ffffff;
+  --bg-card: #ffffff;
+
+  --fg: #171717;
+  --fg-soft: #333333;
+  --fg-faint: #484848;
+
+  --line: #777777;
+  --line-soft: #999999;
+
+  --link: #252525;
+  --link-hover: #000000;
+
+  --accent: #333333;
+  --accent-soft: #e8e8e8;
+}
+
+#panel .panel-card,
+#panel .panel-scroll {
+  color: #222222 !important;
+}
+
+/* أسماء القواميس */
+#panel .pd {
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  color: #222222 !important;
+}
+
+#panel .pd .hd b {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #171717 !important;
+}
+
+/* معلومات القواميس */
+#panel .pd .meta {
+  font-size: 13px !important;
+  color: #444444 !important;
+  line-height: 1.5 !important;
+}
+
+#panel .pd .feat,
+#panel .pd .tag {
+  font-size: 12px !important;
+  color: #333333 !important;
+  border-color: #777777 !important;
+  line-height: 1.4 !important;
+}
+
+#panel .pd .feat.locked {
+  opacity: 0.85 !important;
+}
+
+/* مسارات الملفات والتفاصيل */
+#panel .pd .prow,
+#panel .pd .prov,
+#panel .pd .prov1,
+#panel .pd .path,
+#panel .pd .companions {
+  font-size: 12px !important;
+  color: #444444 !important;
+  line-height: 1.5 !important;
+}
+
+#panel .pd .prow.sub {
+  opacity: 1 !important;
+}
+
+#panel .pd .fmt {
+  font-size: 11.5px !important;
+  color: #333333 !important;
+  font-weight: 600 !important;
+}
+
+#panel .pd .acts a.browse {
+  font-size: 13px !important;
+  color: #222222 !important;
+  font-weight: 500 !important;
+}
+
+/* معلومات «حول» والوصف */
+#panel .pd .about,
+#panel .pd .aboutbody,
+#panel .pd .aboutlangs {
+  font-size: 13px !important;
+  color: #333333 !important;
+  line-height: 1.5 !important;
+}
+
+#panel .pd .aboutbody h4 {
+  font-size: 12px !important;
+  color: #222222 !important;
+  font-weight: 700 !important;
+}
+
+#panel .pd .about > summary,
+#panel .pd .prov > summary {
+  color: #333333 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+/* تسميات اللغات والخصائص */
+#panel .pd .trait {
+  font-size: 12.5px !important;
+  color: #333333 !important;
+
+  background: #eeeeee !important;
+  border-color: #999999 !important;
+
+  line-height: 1.4 !important;
+}
+
+#panel .pd .trait .tk {
+  font-size: 11px !important;
+  color: #444444 !important;
+  font-weight: 600 !important;
+}
+
+/* أزرار وإجراءات لوحة الإعدادات */
+#panel .act,
+#panel .facts .act {
+  font-size: 13px !important;
+  color: #292929 !important;
+}
+
+#panel .facts .seg > span:not(.chips) {
+  font-size: 13px !important;
+  color: #333333 !important;
+}
+
+#panel .facts .seg select {
+  font-size: 13px !important;
+  color: #222222 !important;
+}
+
+/* المجموعات والمجلدات */
+#panel #folders > summary {
+  font-size: 14px !important;
+  color: #333333 !important;
+}
+
+#panel #folders .fsum {
+  color: #444444 !important;
+}
+
+#panel #folders .grp {
+  font-size: 13px !important;
+  color: #333333 !important;
+  font-weight: 700 !important;
+}
+
+#panel #folders .frow .p {
+  font-size: 13px !important;
+  color: #333333 !important;
+}
+
+#panel #folders .frow .n,
+#panel #folders .rv {
+  font-size: 12px !important;
+  color: #444444 !important;
+}
+
+#panel #folders .about .ver {
+  font-size: 12px !important;
+  color: #444444 !important;
+}
+
+#panel #folders .about p {
+  font-size: 13px !important;
+  color: #444444 !important;
+}
+
+/* عناوين القوائم وخيار تفعيل الكل */
+#panel #panelList .pdiv {
+  font-size: 13px !important;
+  color: #333333 !important;
+  font-weight: 700 !important;
+}
+
+#panel .allrow label {
+  font-size: 14px !important;
+  color: #222222 !important;
+  font-weight: 600 !important;
+}
+
+#panel #panelList .nofind {
+  font-size: 13px !important;
+  color: #333333 !important;
+}
+
+/* البحث والتصفية داخل لوحة الإعدادات */
+#panel #azBtn {
+  font-size: 14px !important;
+  color: #222222 !important;
+}
+
+#panel .azq {
+  font-size: 13px !important;
+  color: #333333 !important;
+}
+
+#panel .azgo {
+  font-size: 12px !important;
+}
+
+#panel .panel-head .fs {
+  font-size: 14px !important;
+}
+
+/* التحذيرات ورسائل العمليات */
+#panel .bulkbox {
+  font-size: 13px !important;
+  color: #333333 !important;
+  line-height: 1.6 !important;
+}
+
+#panel .bulkbox .btn {
+  font-size: 13px !important;
+}
+
+#panel #folders .warn {
+  font-size: 13px !important;
+}
+
+/* القواميس المعطّلة */
+#panel .pd.off {
+  opacity: 0.82 !important;
+}
+
+
+/* ============================================================
+   11 — شارات أحجام القواميس
+   ============================================================ */
+
+/* شارات أحجام القواميس المفهرسة */
+#panel #panelList .pd .feat.on,
+#panel #panelList .pd .feat.on.locked {
+  color: #171717 !important;
+  background: #e5e5e5 !important;
+
+  border: 1.5px solid #555555 !important;
+
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+
+/* شارات الخصائص غير النشطة */
+#panel #panelList .pd .feat:not(.on) {
+  color: #333333 !important;
+  background: #ffffff !important;
+
+  border: 1.5px solid #777777 !important;
+}
+
+
+/* ============================================================
+   نهاية KINDLE 4.9 — إصدار WUDICT الموحّد
+   ============================================================ */
